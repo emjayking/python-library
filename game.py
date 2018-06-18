@@ -30,8 +30,8 @@ scores = []
 dead = False
 dead_or_alive_tally = []
 fitnesses = []  # list of the fitnesses of each dot
-all_instuctions = []
-new_instructions = []
+instructions1 = []
+instructions2 = []
 saved = []
 
 # setup
@@ -117,18 +117,18 @@ def calc_fitness():
     return fitness
 
 
+deleted = 1
 # --------------------------------- Random movement-------------------------
 while True:
-    a = 0
-    size = 100 - len(instructions)
-    print(size)
-    print("length of instructions{}".format(len(instructions)))
-    while a != 2:
+    for a in range(2):
+        print("a {}".format(a))
         dot.penup()
-        createInstructions(size)
+        createInstructions(100)
         dotNum += 1
-        all_instuctions.append([a, instructions])  # a instuctions
-
+        if deleted == 1:
+            instructions1.append(instructions)
+        if deleted == 2:
+            instructions2.append(instructions2)
         # print(instructions)
         for i in range(100):
             dead = checkifdead(dead)
@@ -137,12 +137,20 @@ while True:
                 # dot.forward(20)
                 dead = checkifdead(dead)
                 # print(dead)
-                dot.setheading(instructions[i][0])
-                dot.forward(instructions[i][1])
+#                 if a == 0:
+#                     print("1", instructions1[0][i][0])
+#                 else:
+#                     print("2", instructions2[0][i][1])
+                if a == 0:
+                    dot.setheading(instructions1[0][i][0])
+                    dot.forward(instructions1[0][i][1])
+                else:
+                    dot.setheading(instructions2[0][i][0])
+                    dot.forward(instructions2[0][i][1])
                 step_num = i
             elif dead is True:
                 print(dead)
-                scores.append([dotNum, i])
+                step_num = i
                 # print(scores)
                 # calculate how far it was from the goal on each axis
                 xdis, ydis = dis_from_goal()
@@ -151,95 +159,64 @@ while True:
                 dot.goto(0, 0)
                 dot.clear()
                 break
-
-        a += 1
-        dead_or_alive_tally.append([a, dead])
-        fitnesses.append([a, fitness])
+        dead_or_alive_tally.append([i, dead])
+        fitnesses.append([i, fitness])
 
     print("scores{}".format(scores))
     print("dead or alive {}".format(dead_or_alive_tally))
     print("fitnesses {}".format(fitnesses))
-    print("all instuctions {}".format(all_instuctions))
-    # ------------------------------Find fittest run through ---------------- #
-    # add all the fitnesses together
-    # divide by number of fitnesses
-    # if dot is above the average number of fitnesses then save its instuctions
-    fitnesses_total = 0
-    for i in range(len(fitnesses)):
-        fitnesses_total += fitnesses[i][1]
-    fitnesses_total /= len(fitnesses)
-    for i in range(len(fitnesses)):
-        if fitnesses[i][1] > fitnesses_total:
-            saved.append([i, True])
-        else:
-            saved.append([i, False])
-    print("fitnesses total {}".format(fitnesses_total))
-    print("saved {}".format(saved))
 
-    # if a set of instuctions was saved , add it to a new list
-    for i in range(len(all_instuctions)):
-        if saved[i][1] is True:
-            new_instructions.append(all_instuctions[i][1])
-    print("new instructions".format(new_instructions))
+    # attempt 2
+    # make the code loop twice, save the instructions of each time
 
-    # find the dot with the least steps taken
+    # choose the best of the 2 run throughs
+    if fitnesses[0] > fitnesses[1]:
+        instructions1 = []
+        deleted = 1
+    else:
+        instructions2 = []
+        deleted = 2
+    # mutate the best 1
+    if deleted == 1:
+        for i in range(100):
+            chance = random.randint(0, 10)
+            if chance > 3:
+                instructions2[0][i][0] = random.randint(0, 40)
+                print("mutated {}".format(instructions2[0][i][0]))
+            elif chance > 4:
+                instructions2[0][i][1] = random.randint(0, 180)
+                print("mutated {}".format(instructions2[0][i][1]))
+    else:
+        for i in range(100):
+            chance = random.randint(0, 10)
+            if chance > 3:
+                instructions1[0][i][0] = random.randint(0, 40)
+                print("mutated {}".format(instructions1[0][i][0]))
+            elif chance > 4:
+                instructions1[0][i][1] = random.randint(0, 180)
+                print("mutated {}".format(instructions1[0][i][1]))
+    fitnesses = []
 
-    bestDot = scores[0][1]
-    best_dot_steps = 0
-    best_dot_steps_index = 0
-    for i in range(2):
-        if scores[i][1] < bestDot:
-            best_dot_steps_index = scores[i][0]
-            best_dot_steps = scores[i][1]
-    # print(scores)
-    print("The best score was {}, attempt number {}"
-          .format(best_dot_steps, best_dot_steps_index))
-    # ------------------------------- Generate new Instructions ------------- #
-    # mutate new instructions
-    mutation_rate = 3
-    for i in range(len(new_instructions)):
-        print("length of new instructions {}".format(len(new_instructions)))
-        mutate = random.randint(0, 10)
-        if mutate < 3:
-            new_instructions[i][0] = random.randint(0, 180)
-        else:
-            new_instructions[i][0] = instructions[i][0]
-        if mutate < 5:
-            new_instructions[i][1] = random.randint(0, 40)
-        else:
-            new_instructions[i][0] = instructions[i][0]
-    print("new instructions {}".format(new_instructions))
-    instructions = []
-    print("blank instructions {}".format(instructions))
-    for i in range(len(new_instructions)):
-        instructions.append([new_instructions[i][0], new_instructions[i][1]])
-        print("appended instructions {}".format(instructions))
-        print("length of appended instructions {}".format(len(instructions)))
+    # run the new instuctions
+    # randomly generate a new 1
+    # repeat
 
+    # -------------------------------player setup--------------------------- #
 
-# Calculate fitness as distance from goal/steps taken
+    # what to do when keys are pressed
+    # Commented out because it's not nessescary
+    # speed = 1
 
+    # def travel():
+    #   dot.forward(speed)
+    #   screen.ontimer(travel, 2)
 
-# -------------------------------player setup------------------------------ #
+    # screen.listen()
+    # screen.onkey(lambda: dot.setheading(90), 'Up')
+    # screen.onkey(lambda: dot.setheading(180), 'Left')
+    # screen.onkey(lambda: dot.setheading(0), 'Right')
+    # screen.onkey(lambda: dot.setheading(270), 'Down')
 
+    # travel()
 
-# what to do when keys are pressed
-# Commented out because it's not nessescary
-# speed = 1
-
-
-# def travel():
-#   dot.forward(speed)
-#   screen.ontimer(travel, 2)
-
-
-# screen.listen()
-# screen.onkey(lambda: dot.setheading(90), 'Up')
-# screen.onkey(lambda: dot.setheading(180), 'Left')
-# screen.onkey(lambda: dot.setheading(0), 'Right')
-# screen.onkey(lambda: dot.setheading(270), 'Down')
-
-
-# travel()
-
-# screen.mainloop()
+    # screen.mainloop()
