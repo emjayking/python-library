@@ -53,7 +53,7 @@ print("{} is a nice name!".format(name.capitalize()))  # worthless compliments
 # start loop
 for i in range(7):
     # ask the user how much time they spend gaming each day
-    while i != 7:  # for each day of the week
+    while True:  # for each day of the week
         timeSpent = force_num(  # ask the how much time they spent on each day
             "How many hours (whole numbers only) did you"
             " spend gaming on {}, {}?"
