@@ -1,5 +1,5 @@
 # 31/01/19, basic plan and starter code
-# TO DO: add boundary conditions. baby proof code, plan this $%!#, allow the user to choose their units. rework function
+# TO DO: add boundary conditions. baby proof code, plan this $%!#.
 # Ask user how much cash they have, (must be reasonable amount i.e. $10)
 print('hello world')
 # ---------------------------------- Variables ------------------------------- #
@@ -8,6 +8,7 @@ average_price = 0 # the average price of all the products
 cheapest_item = ["", 0] # the cheapest item listed
 dearest_item = ["", 0] # the most expensive item listed
 remaining_budget = 0 # this will be used to calculate how many items the user can buy
+cheapest_unit_cost = ["", 0]
 # ---------------------------------- Functions ------------------------------- #
 def enter_value(name):
     # basic info for each product
@@ -19,7 +20,7 @@ def enter_value(name):
     for value in item: # loop to create a dictionary for the product
         # basic 'if' logic to help with grammar
         if value == "unit":
-            item[value] = input("please choose between kg, g, ml or l to use as the unit of measurement for this product  ")
+            item[value] = input("please choose between kg, g, mL or L to use as the unit of measurement for this product  ").strip()
 
         elif value == "mass": #
             item[value] = input("how many {} are in the product?".format(item["unit"]))
@@ -55,7 +56,7 @@ for i in range(100): # can't imagine any students using a budget calculator buyi
 
 print(items)
 # When the user exits the loop, display summary values
-for name, values in items.items()
+for name, values in items.items():
     # Item name and unit price for each item in the list
     print("{} costs ${}".format(name, values["price"]))
     # Avg price
@@ -70,11 +71,21 @@ for name, values in items.items()
 # ---------------------------------- purchase logic ------------------------- #
 
 # calculate the 'value' of the product as a function of cost//mass(kg)
-
+for name, values in items.items():
     # convert all units to kg
+    if values["unit"] == "g" or values["unit"] == "ml":
+        values["mass"] /= 1000
+    # for the sake of my sanity, 1 litre = 1 kilogram
 
     # calculate 'value' as 'unit cost'
+    values["unit_cost"] = values["price"] / values["mass"]
 
+    #find the lowest 'unit_cost'
+    if values["unit_cost"] < cheapest_unit_cost[1]:
+        cheapest_unit_cost = [name, values["unit_cost"]]
 # recomend the best value for money that fits the user's budget
+
+for name, values in items.items():
+    if values["unit_cost"] == [""]
 
 # Give user option to restart or exit.
