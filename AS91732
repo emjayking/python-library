@@ -1,0 +1,27 @@
+# 31/01/19, basic plan and starter code
+
+# Ask user how much cash they have, (must be reasonable amount i.e. $10)
+print('hello world')
+
+
+#Loop
+    # Enter product info (name weight/volume, price etc)
+
+
+    # Ask to continue
+
+# When the user exits the loop, display summary values
+
+    # Item name and unit price for each item in the list
+
+    # Avg price
+
+    # Cheapest Item
+
+    # Most Expensive Item
+
+# Recomend what item/s to purchase based on
+
+    # permutate the items until a combination that maximises volume while fitting budget is found.
+
+# Give user option to restart or exit.
