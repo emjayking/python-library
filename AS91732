@@ -1,25 +1,44 @@
 # 31/01/19, basic plan and starter code
-
+# TO DO: add boundary conditions. baby proof code, plan this $%!#
 # Ask user how much cash they have, (must be reasonable amount i.e. $10)
 print('hello world')
+
+# ---------------------------------- Functions ------------------------------- #
+def enter_value(name):
+    item = {
+        "mass": "",
+        "price" ""
+    }
+    for value in item:
+        item[value] = input("what is the {} of the product?".format(name))
+
+    product_values = item
+    return product_values
+
+# ------------------------------- Code ------------------------------ #
 
 while True:
     try:
         cash = float(input("what is your budget?   $:"))
-        #------------- Add conditions for reasonable boundaries ------------#
+        #-------- Add conditions for reasonable boundaries -------#
         break
     except ValueError:
         print("Error, try again")
 # Loop
 items = {}
-while True:
-    #--------- Add menu to allow user to exit -------------#
+for i in range(100): # can't imagine any students using a budget calculator buying more than 100 packs of instant noodles
 
     # Enter product info (name weight/volume, price etc)
-    try:
-        product_name = str(input("what is the name of the product"))
-    # Ask to continue
+    product_name = input("what is the name of the product?")
+    items[product_name] = enter_value(product_name)
 
+    # Ask to continue
+    confirm = "n"
+    confirm = input("do you want to continue y/n   :")
+    if confirm == "n":
+        break
+
+print(items)
 # When the user exits the loop, display summary values
 
     # Item name and unit price for each item in the list
@@ -32,6 +51,6 @@ while True:
 
 # Recomend what item/s to purchase based on
 
-    # permutate the items until a combination that maximises volume while fitting budget is found.
+    # permutate the items until a combination that maximises volume while   fitting budget is found.
 
 # Give user option to restart or exit.
