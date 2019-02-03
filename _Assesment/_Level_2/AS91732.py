@@ -20,14 +20,20 @@ def enter_value(name):
     }
     for value in item: # loop to create a dictionary for the product
         # basic 'if' logic to help with grammar
-        if value == "unit":
-            item[value] = input("please choose between kg, g, mL or L to use as the unit of measurement for this product  ").strip()
+        while True:
+            try:
+                if value == "unit":
+                    item[value] = str(input("please choose between kg, g, mL or L to use as the unit of measurement for this product  ").strip())
 
-        elif value == "mass": #
-            item[value] = input("how many {} are in the product?".format(item["unit"]))
+                elif value == "mass": #
+                    item[value] = int(input("how many {}s are in the product?".format(item["unit"])))
 
-        # standard question for all other infor
-        item[value] = input("what is the {} of the product?  ".format(value))
+                # standard question for all other infor
+                item[value] = input("what is the {} of the product?  ".format(value))
+
+                break
+            except ValueError:
+                print("Error, try again")
 
     product_values = item
     return product_values
@@ -39,11 +45,15 @@ def find_cheapest():
             cheapest_unit_cost = [name, values["unit_cost"]]
 
 # ------------------------------- Code ------------------------------ #
-    while True:
+while True:
     while True:
         try:
             budget = float(input("what is your budget?   $:"))
             #-------- Add conditions for reasonable boundaries -------#
+            if budget > 300:
+                print("I think that's a bit unlikely, please enter a more reasonable amount")
+            elif budget <= 0:
+                print("this isn't a charity, you can't buy anything with that amount")
             break
         except ValueError:
             print("Error, try again")
@@ -96,7 +106,7 @@ def find_cheapest():
         if values["unit_cost"] == [cheapest_unit_cost[1]] and values["price"] < remaining_budget:
             recomendation.append(name)
             remaining_budget -= values["price"]
-            items.del(name)
+            del items["name"]
             find_cheapest()
 
     print(recomendation)
