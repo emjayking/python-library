@@ -10,6 +10,7 @@ dearest_item = ["", 0] # the most expensive item listed
 remaining_budget = 0 # this will be used to calculate how many items the user can buy
 cheapest_unit_cost = ["", 0]
 recomendation = [] # what the user should buy
+units_of_measurement = ["kg", "g", "ml", "l"]
 # ---------------------------------- Functions ------------------------------- #
 def enter_value(name):
     # basic info for each product
@@ -23,13 +24,23 @@ def enter_value(name):
         while True:
             try:
                 if value == "unit":
-                    item[value] = str(input("please choose between kg, g, mL or L to use as the unit of measurement for this product  ").strip())
+                    item[value] = str(input("please choose between kg, g, ml or l to use as the unit of measurement for this product  ").strip())
+                    if item[value] in units_of_measurement:
+                        print("that is not an acceptable unit, please try again")
+                        continue
+
 
                 elif value == "mass": #
                     item[value] = int(input("how many {}s are in the product?".format(item["unit"])))
 
-                # standard question for all other infor
-                item[value] = input("what is the {} of the product?  ".format(value))
+                elif value == "price":
+                    item[value] = float(input("what is the price of the product?  $:"))
+                    if item[value] > 200:
+                        print("That's too expensive! try again")
+                        continue
+                    elif item[value] < 0.10:
+                        print("that's too cheap, try again")
+                        continue
 
                 break
             except ValueError:
@@ -50,8 +61,9 @@ while True:
         try:
             budget = float(input("what is your budget?   $:"))
             #-------- Add conditions for reasonable boundaries -------#
-            if budget > 300:
+            if budget > 300.0:
                 print("I think that's a bit unlikely, please enter a more reasonable amount")
+                continue
             elif budget <= 0:
                 print("this isn't a charity, you can't buy anything with that amount")
             break
@@ -67,11 +79,11 @@ while True:
 
         # Ask to continue
         confirm = "n"
-        confirm = input("do you want to continue y/n   :")
+        confirm = input("do you want to enter another product? y/n   :")
         if confirm == "n":
             break
 
-    print(items)
+    # print(items)
     # When the user exits the loop, display summary values
     for name, values in items.items():
         # Item name and unit price for each item in the list
@@ -108,8 +120,10 @@ while True:
             remaining_budget -= values["price"]
             del items["name"]
             find_cheapest()
-
-    print(recomendation)
+    if recomendation != []:
+        print("I would recomend you buy:" + recomendation)
+    else:
+        print("You can't buy any of the products you entered with the budget you have")
 
 # Give user option to restart or exit.
     restart = input("would you like to restart?   y/n:  ")
