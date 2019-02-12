@@ -1,6 +1,8 @@
-# 31/01/19, basic plan and starter code
-# TO DO: add boundary conditions. baby proof code, plan this $%!#.
-
+# Author: Matthew King
+# last edited: 12/02/19
+# purpose : to get credits
+# verion num: 1.0
+# notes: this is version 1.0 because it is the first working version that is fully complete any major changes will increase it to 1.1 and any minor changes will make it 1.01 etc. 
 print('hello world')
 # ---------------------------------- Variables ------------------------------- #
 items = {} # dictionary that stores all the information
