@@ -1,8 +1,8 @@
 # Author: Matthew King
-# last edited: 12/02/19
+# last edited: 20/02/19
 # purpose : to get credits
-# verion num: 1.0
-# notes: this is version 1.0 because it is the first working version that is fully complete any major changes will increase it to 1.1 and any minor changes will make it 1.01 etc.
+# verion num: 1.1
+# notes: this is version 1.x because it is the first working version that is fully complete any major changes will increase it to 1.x + 1 and any minor changes will make it 1.x + 0.1 etc.
 print('hello world')
 # ---------------------------------- Variables ------------------------------- #
 items = {} # dictionary that stores all the information
@@ -12,6 +12,7 @@ dearest_item = ["", 0] # the most expensive item listed
 remaining_budget = 0 # this will be used to calculate how many items the user can buy
 recomendation = [] # what the user should buy
 units_of_measurement = ["kg", "g", "ml", "l"]
+item_list = []
 # ---------------------------------- Functions ------------------------------- #
 def enter_value(name):
     # basic info for each product
@@ -51,9 +52,8 @@ def enter_value(name):
     return product_values
 
 # this will allow me to sort this list to find the cheapest unit cost
-def my_key(dict):
-    name, values = dict.values()
-    return values["unit_cost"]
+def my_key(list):
+    return 
 # ------------------------------- Code ------------------------------ #
 while True:
     while True:
@@ -108,17 +108,19 @@ while True:
         # calculate 'value' as 'unit cost'
         values["unit_cost"] = float(values["price"] / values["mass"])
         print("unit costs {}".format(values["unit_cost"]))
+        item_list.append(values.values())
 
     #find the lowest 'unit_cost'
-    print("unsorted {}".format(items))
-    items.sort(key=my_key)
-    print("sorted {}".format(items))
+
+    print("unsorted {}".format(item_list))
+    item_list.sort(key=my_key)
+    print("sorted {}".format(item_list))
     # recomend the best value for money that fits the user's budget
     remaining_budget = budget
     # loop through each items
-    for name, values in items.items():
+    for list_item in item_list:
         # if the item costs more than the budgeet then ignore it
-        if values['price'] < remaining_budget:
+        if list_item[0] < remaining_budget:
             recomendation.append(name)
             remaining_budget -= values["price"]
     print(recomendation)
