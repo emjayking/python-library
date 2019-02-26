@@ -1,14 +1,14 @@
 # Author: Matthew King
 # last edited: 20/02/19
 # purpose : to get credits
-# verion num: 1.1
+# verion num: 2.0
 # notes: this is version 1.x because it is the first working version that is fully complete any major changes will increase it to 1.x + 1 and any minor changes will make it 1.x + 0.1 etc.
 print('hello world')
 # ---------------------------------- Variables ------------------------------- #
 items = {} # dictionary that stores all the information
 average_price = 0 # the average price of all the products
 cheapest_item = ["", 0] # the cheapest item listed
-dearest_item = ["", 0] # the most expensive item listed
+dearest_item = ["", 0] # the most expensive item listeds
 remaining_budget = 0 # this will be used to calculate how many items the user can buy
 recomendation = [] # what the user should buy
 units_of_measurement = ["kg", "g", "ml", "l"]
@@ -52,8 +52,7 @@ def enter_value(name):
     return product_values
 
 # this will allow me to sort this list to find the cheapest unit cost
-def my_key(list):
-    return 
+
 # ------------------------------- Code ------------------------------ #
 while True:
     while True:
@@ -107,25 +106,31 @@ while True:
 
         # calculate 'value' as 'unit cost'
         values["unit_cost"] = float(values["price"] / values["mass"])
-        print("unit costs {}".format(values["unit_cost"]))
-        item_list.append(values.values())
-
-    #find the lowest 'unit_cost'
-
-    print("unsorted {}".format(item_list))
-    item_list.sort(key=my_key)
-    print("sorted {}".format(item_list))
-    # recomend the best value for money that fits the user's budget
+        # print("unit costs {}".format(values["unit_cost"]))
+        item_list.append(values['unit_cost'])
+    print(item_list)
+    # ----------------------find the lowest 'unit_cost'--------------- #
+    # sort the list of unit costs
+    item_list.sort()
+    #set the remaining_budget
     remaining_budget = budget
-    # loop through each items
-    for list_item in item_list:
-        # if the item costs more than the budgeet then ignore it
-        if list_item[0] < remaining_budget:
-            recomendation.append(name)
-            remaining_budget -= values["price"]
-    print(recomendation)
+    # then get the cheapest one and check if it's in the remaining_budget
+    for cost in item_list:
+        for name, values in items.items():
+            # if it is then add it's name (do a reverse dictionary lookup) to a list called recomendation
+            if values["unit_cost"] == cost and values["price"] <= remaining_budget:
+                recomendation.append(name)
 
+    print("I recomend you buy {}".format(recomendation))
 # Give user option to restart or exit.
     restart = input("would you like to restart?   y/n:  ")
-    if restart == "n":
-        break
+    if restart == "n": break
+
+'''
+test cases:
+budget : 2.00
+Whitakers Slab: kg: 0.2  | cost: 2.99
+Cadbury Block:  kg: 0.22 | cost: 3.50
+Kit Kat Bar:    kg: 0.1  | cost: 1.99
+Recomendation: "Kit Kat Bar"
+'''
