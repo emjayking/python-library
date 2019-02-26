@@ -1,18 +1,14 @@
 # Author: Matthew King
 # last edited: 20/02/19
 # purpose : to get credits
-# verion num: 2.0
+# verion num: 2.1
 # notes: this is version 1.x because it is the first working version that is fully complete any major changes will increase it to 1.x + 1 and any minor changes will make it 1.x + 0.1 etc.
-print('hello world')
 # ---------------------------------- Variables ------------------------------- #
 items = {} # dictionary that stores all the information
-average_price = 0 # the average price of all the products
-cheapest_item = ["", 0] # the cheapest item listed
-dearest_item = ["", 0] # the most expensive item listeds
 remaining_budget = 0 # this will be used to calculate how many items the user can buy
 recomendation = [] # what the user should buy
 units_of_measurement = ["kg", "g", "ml", "l"]
-item_list = []
+item_list = [] # a list of all the unit_costs
 # ---------------------------------- Functions ------------------------------- #
 def enter_value(name):
     # basic info for each product
@@ -63,6 +59,7 @@ while True:
                 continue
             elif budget <= 0:
                 print("this isn't a charity, you can't buy anything with that amount")
+                continue
             break
         except ValueError:
             print("Error, try again")
@@ -79,18 +76,6 @@ while True:
         if confirm == "n":
             break
 
-    # When the user exits the loop, display summary values
-    for name, values in items.items():
-        # Item name and unit price for each item in the list
-        print("{} costs ${}".format(name, values["price"]))
-        # Avg price
-        average_price += values["price"]
-        # Cheapest Item
-        if values["price"] < cheapest_item[1]:
-            cheapest_item = [name, values["price"]]
-        # Most Expensive Item
-        if values["price"] > dearest_item[1]:
-            dearest_item = [name, values["price"]]
 
     # ---------------------------------- purchase logic ---------------------- #
 
@@ -113,10 +98,15 @@ while True:
     for cost in item_list:
         for name, values in items.items():
             # if it is then add it's name (do a reverse dictionary lookup) to a list called recomendation
-            if values["unit_cost"] == cost and values["price"] <= remaining_budget:
-                recomendation.append(name)
+            if values["unit_cost"] == cost:
+                if values["price"] <= remaining_budget:
+                    recomendation.append(name)
+                    remaining_budget -= values["price"]
 
-    print("I recomend you buy {}".format(recomendation))
+    if recomendation == []:
+        print("you can't buy anything")
+    else:
+        print("I recommend you buy {}".format(recomendation))
 # Give user option to restart or exit.
     restart = input("would you like to restart?   y/n:  ")
     if restart == "n": break
