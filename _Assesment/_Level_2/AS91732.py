@@ -26,17 +26,17 @@ def enter_value(name):
         while True:
             try:
                 if value == "unit":
-                    item[value] = str(input("please choose between kg, g, ml or l to use as the unit of measurement for this product  ").strip())
+                    item[value] = str(input("please choose between kg, g, ml or l to use as the unit of measurement for this product      ").strip())
                     if item[value] not in units_of_measurement:
                         print("that is not an acceptable unit, please try again")
                         continue
 
 
                 elif value == "mass": #
-                    item[value] = float(input("how many {}s are in the product?".format(item["unit"])))
+                    item[value] = float(input("how many {}s are in the product?  ".format(item["unit"])))
 
                 elif value == "price":
-                    item[value] = float(input("what is the price of the product?  $:"))
+                    item[value] = float(input("what is the price of the product?  $: "))
                     if item[value] > 200:
                         print("That's too expensive! try again")
                         continue
@@ -58,7 +58,6 @@ while True:
     while True:
         try:
             budget = float(input("what is your budget?   $:"))
-            #-------- Add conditions for reasonable boundaries -------#
             if budget > 300.0:
                 print("I think that's a bit unlikely, please enter a more reasonable amount")
                 continue
@@ -67,7 +66,6 @@ while True:
             break
         except ValueError:
             print("Error, try again")
-    # Loop
 
     for i in range(100): # can't imagine any students using a budget calculator buying more than 100 packs of instant noodles
 
@@ -81,7 +79,6 @@ while True:
         if confirm == "n":
             break
 
-    # print(items)
     # When the user exits the loop, display summary values
     for name, values in items.items():
         # Item name and unit price for each item in the list
@@ -103,12 +100,10 @@ while True:
         if values["unit"] == "g" or values["unit"] == "ml":
             values["mass"] /= 1000
         # for the sake of my sanity, 1 litre = 1 kilogram
-
         # calculate 'value' as 'unit cost'
         values["unit_cost"] = float(values["price"] / values["mass"])
-        # print("unit costs {}".format(values["unit_cost"]))
         item_list.append(values['unit_cost'])
-    print(item_list)
+
     # ----------------------find the lowest 'unit_cost'--------------- #
     # sort the list of unit costs
     item_list.sort()
@@ -125,12 +120,3 @@ while True:
 # Give user option to restart or exit.
     restart = input("would you like to restart?   y/n:  ")
     if restart == "n": break
-
-'''
-test cases:
-budget : 2.00
-Whitakers Slab: kg: 0.2  | cost: 2.99
-Cadbury Block:  kg: 0.22 | cost: 3.50
-Kit Kat Bar:    kg: 0.1  | cost: 1.99
-Recomendation: "Kit Kat Bar"
-'''
