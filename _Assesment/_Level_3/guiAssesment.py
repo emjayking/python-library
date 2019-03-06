@@ -30,24 +30,46 @@ import tkinter as tk
 root = Tk()
 root.title("Comic Book Store")
 
-restock_window = Tk()
-restock_window.title("Restock Window")
-
 restock_num = IntVar()
 stocks = [8, 12, 3]
 
-# ------------------------------ GUI code ------------------------------------ #
-super_dude_stock = Label(root, textvariable=restock_num)
-super_dude_stock.pack()
+chosen_option = StringVar()
 
-lizard_man_stock = Label(root, text="error 404 content not found")
-lizard_man_stock.pack()
+comics = ["Super Dude", "Lizard Man", "Water Woman"]
 
-water_woman_stock = Label(root, text="BETA feature, testing in progress")
+def sell():
+    comic = chosen_option.get()
+    if comic == "Super Dude":
+        stocks[0] -= 1
+    elif comic == "Lizard Man":
+        stocks[1] -= 1
+    else:
+        stocks[2] -= 1
 
-restock_entry = Entry(restock_window, textvariable=restock_num)
-restock_entry.pack()
+# ------------------ GUI code main---------------------------- #
+
+super_dude_stock = Label(root, textvariable=)
+super_dude_stock.grid(row=1, column=0, padx=10, pady=5)
+
+lizard_man_stock = Label(root, textvariable=stocks[1])
+lizard_man_stock.grid(row=2, column=0, padx=10, pady=5)
+
+water_woman_stock = Label(root, textvariable=stocks[2])
+water_woman_stock.grid(row=3, column=0, padx=10, pady=5)
+
+label1 = Label(root, text="Comic: ")
+label1.grid(row=0, column=0, padx=10, pady=5)
+
+comic_selector = ttk.OptionMenu(root, chosen_option, comics[0], * comics)
+comic_selector.grid(row=0, column=1, padx=10, pady=5)
+
+sell_button = Button(
+root, text="Sell", command=sell, activebackground="blue", state="normal"
+)
+
+sell_button.grid(row=0, column=2, padx=10, pady=5)
 
 
 
+# ----------------- Stuff n Things
 root.mainloop()
