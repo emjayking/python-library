@@ -27,49 +27,88 @@ from tkinter import ttk
 import tkinter as tk
 
 # ------------------------------- setup -------------------------------------- #
+
+# ------------ Windows ----------- #
 root = Tk()
 root.title("Comic Book Store")
 
+# ------------- Variables -------- #
 restock_num = IntVar()
-stocks = [8, 12, 3]
-
 chosen_option = StringVar()
-
+super_label_text = StringVar()
+lizard_label_text = StringVar()
+water_label_text = StringVar()
+status_str = StringVar()
+stocks = [8, 12, 3]
 comics = ["Super Dude", "Lizard Man", "Water Woman"]
 
+# --------- Variable setup ------- #
+lizard_label_text.set("Lizard Man Stock: {}".format(stocks[1]))
+water_label_text.set("Water Woman Stock: {}".format(stocks[2]))
+super_label_text.set("Super Dude Stock: {}".format(stocks[0]))
+status_str.set("Startup Succesfull")
+
+# -------- Frame Setup ----------- #
+
+status_frame = ttk.Frame(root)
+status_frame.grid(row=2, column=0, sticky="NSEW", padx=10, pady=5)
+
+sell_frame = ttk.Frame(root)
+sell_frame.grid(row=0, column=0, sticky="NSEW", padx=10, pady=5)
+
+stock_frame = ttk.Frame(root)
+stock_frame.grid(row=1, column=0, sticky="NSEW", padx=10, pady=5)
+
+# -------- Functions ------------ #
 def sell():
     comic = chosen_option.get()
     if comic == "Super Dude":
-        stocks[0] -= 1
+        if stocks[0] > 0:
+            stocks[0] -= 1
+            super_label_text.set("Super Dude Stock: {}".format(stocks[0]))
+            status_str.set("Sell attempt succesfull")
+        else:
+            status_str.set("Sell attempt failed, stock is at 0")
     elif comic == "Lizard Man":
-        stocks[1] -= 1
+        if stocks[1] > 0:
+            stocks[1] -= 1
+            lizard_label_text.set("Lizard Man Stock: {}".format(stocks[1]))
+            status_str.set("Sell attempt succesfull")
+        else:
+            status_str.set("Sell attempt failed, stock is at 0")
     else:
-        stocks[2] -= 1
+        if stocks[2] > 0:
+            stocks[2] -= 1
+            water_label_text.set("Water Woman Stock: {}".format(stocks[2]))
+            status_str.set("Sell attempt succesfull")
+        else:
+            status_str.set("Sell attempt failed, stock is at 0")
 
 # ------------------ GUI code main---------------------------- #
 
-super_dude_stock = Label(root, textvariable=)
+super_dude_stock = Label(stock_frame, textvariable=super_label_text)
 super_dude_stock.grid(row=1, column=0, padx=10, pady=5)
 
-lizard_man_stock = Label(root, textvariable=stocks[1])
+lizard_man_stock = Label(stock_frame, textvariable=lizard_label_text)
 lizard_man_stock.grid(row=2, column=0, padx=10, pady=5)
 
-water_woman_stock = Label(root, textvariable=stocks[2])
+water_woman_stock = Label(stock_frame, textvariable=water_label_text)
 water_woman_stock.grid(row=3, column=0, padx=10, pady=5)
 
-label1 = Label(root, text="Comic: ")
+label1 = Label(sell_frame, text="Comic: ")
 label1.grid(row=0, column=0, padx=10, pady=5)
 
-comic_selector = ttk.OptionMenu(root, chosen_option, comics[0], * comics)
+comic_selector = ttk.OptionMenu(sell_frame, chosen_option, comics[0], * comics)
 comic_selector.grid(row=0, column=1, padx=10, pady=5)
 
 sell_button = Button(
-root, text="Sell", command=sell, activebackground="blue", state="normal"
+sell_frame, text="Sell", command=sell, activebackground="blue", state="normal"
 )
-
 sell_button.grid(row=0, column=2, padx=10, pady=5)
 
 
+status = Label(status_frame, textvariable=status_str)
+status.grid(row=0, column=0, padx=10, pady=5)
 
 # ----------------- Stuff n Things
 root.mainloop()
