@@ -33,7 +33,6 @@ root = Tk()
 root.title("Comic Book Store")
 
 # ------------- Variables -------- #
-restock_num = IntVar()
 chosen_option = StringVar()
 super_label_text = StringVar()
 lizard_label_text = StringVar()
@@ -90,30 +89,23 @@ def sell():
             status_str.set("Sell attempt failed, stock is at 0")
 
 def restock():
-    amount = int(restock_num.get())
+    amount = int(restock_slider.get())
     comic = chosen_option.get()
     if comic == "Super Dude":
         if amount > 0:
             stocks[0] += amount
             super_label_text.set("Super Dude Stock: {}".format(stocks[0]))
             status_str.set("Restock attempt succesfull")
-        else:
-            status_str.set("restock attempt failed, cannot restock a negative amount")
     elif comic == "Lizard Man":
         if amount > 0:
             stock[s1] += amount
             lizard_label_text.set("Lizard Man Stock: {}".format(stocks[1]))
             status_str.set("Restock attempt succesfull")
-        else:
-            status_str.set("restock attempt failed, cannot restock a negative amount")
     else:
         if amount > 0:
             stocks[2] += amount
             water_label_text.set("Water Woman Stock: {}".format(stocks[2]))
             status_str.set("Restock attempt succesfull")
-        else:
-            status_str.set("Restock attempt failed, stock is at 0")
-
 
 # ------------------ GUI code main---------------------------- #
 
@@ -146,11 +138,12 @@ sell_button.grid(row=0, column=2, padx=10, pady=5)
 restock_label = Label(restock_frame, text="Amount to restock: ")
 restock_label.grid(row=0, column=0, padx=5, pady=5)
 
-restock_entry = Entry(restock_frame, textvariable=restock_num)
-restock_entry.grid(row=0, column=1, padx=2, pady=5)
-
 restock_button = Button(restock_frame, text="Restock", command=restock, activebackground="blue", state="normal")
-restock_button.grid(row=0, column=3, padx=10, pady=5)
+restock_button.grid(row=0, column=2, padx=10, pady=5)
+
+restock_slider = Scale(restock_frame, from_=0, to=100, orient=HORIZONTAL)
+restock_slider.grid(row=0, column=1, padx=10, pady=5)
+
 
 # ------- Status ----- #
 

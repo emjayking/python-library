@@ -51,6 +51,8 @@ def enter_value(name):
 
 # ------------------------------- Code ------------------------------ #
 while True:
+    print("""Welcome to the budget calculator:
+    you can enter the values of various items and I while calculate what you should buy to get the best vaue for money when given a fixed budget.""")
     while True:
         try:
             budget = float(input("what is your budget?   $:"))
@@ -67,7 +69,12 @@ while True:
     for i in range(100): # can't imagine any students using a budget calculator buying more than 100 packs of instant noodles
 
         # Enter product info (name weight/volume, price etc)
-        product_name = input("what is the name of the product?")
+        while True:
+            product_name = input("what is the name of the product?")
+            if product_name.strip().isalpha():
+                break
+            else:
+                print("please don't use numbers")
         items[product_name] = enter_value(product_name)
 
         # Ask to continue
@@ -107,6 +114,15 @@ while True:
         print("you can't buy anything")
     else:
         print("I recommend you buy {}".format(recomendation))
+        print("It would cost you {}".format(budget - remaining_budget))
 # Give user option to restart or exit.
     restart = input("would you like to restart?   y/n:  ")
-    if restart == "n": break
+    while True:
+        if restart != "y" and restart != "n":
+            print("please enter 'y' or 'n'")
+            restart = input("would you like to restart?   y/n:  ")
+        else:
+            break
+
+    if restart == 'n':
+        break
