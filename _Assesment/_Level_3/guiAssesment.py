@@ -3,7 +3,6 @@ from tkinter import ttk
 import tkinter as tk
 
 # ------------------------------- setup -------------------------------------- #
-
 # ------------ Windows ----------- #
 root = Tk()
 root.title("Comic Book Store")
@@ -13,6 +12,7 @@ chosen_option = StringVar()
 super_label_text = StringVar()
 lizard_label_text = StringVar()
 water_label_text = StringVar()
+restock_amount = StringVar()
 status_str = StringVar()
 comics_sold = IntVar()
 stocks = [8, 12, 3]
@@ -68,7 +68,12 @@ def sell():
             status_str.set("Sell attempt failed, stock is at 0")
 
 def restock():
-    amount = int(restock_slider.get())
+    # Make sure the user doesn't enter any decimals or words
+    try:
+        amount = int(restock_amount.get())
+    except:
+        status_str.set("Error, whole numbers only please!")
+
     comic = chosen_option.get()
     if comic == "Super Dude":
         stocks[0] += amount
@@ -117,8 +122,8 @@ restock_label.grid(row=0, column=0, padx=5, pady=5)
 restock_button = Button(restock_frame, text="Restock", command=restock, activebackground="blue", state="normal")
 restock_button.grid(row=0, column=2, padx=10, pady=5)
 
-restock_slider = Scale(restock_frame, from_=0, to=100, orient=HORIZONTAL)
-restock_slider.grid(row=0, column=1, padx=10, pady=5)
+restock_input = Entry(restock_frame, textvariable=restock_amount)
+restock_input.grid(row=0, column=1, padx=5, pady=5)
 
 
 # ------- Status ----- #
