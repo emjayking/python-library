@@ -87,8 +87,21 @@ def restock():
         stocks[2] += amount
         water_label_text.set("Water Woman Stock: {}".format(stocks[2]))
         status_str.set("Restock attempt succesfull")
+#------------------- CSV EXPERIMENTS ------------------------- #
 
+"""the plan:
+import data from a csv file
+
+make a dictionary from the file
+
+dict = {comic_name: 0, etc:you get the picture }
+
+re-write the sell function so that it figures out what stock to update based on the dict values.
+
+make it so it can write to the csv file in order to update the file at the end of the session
+"""
 # ------------------ GUI code main---------------------------- #
+
 
 label1 = Label(sell_frame, text="Comic: ")
 label1.grid(row=0, column=0, padx=10, pady=5)

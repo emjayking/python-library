@@ -1,0 +1,5 @@
+comic_name,stock
+Super Dude, 8,
+Lizard Man, 12,
+Water Woman, 3,
+_amount_sold, 0
