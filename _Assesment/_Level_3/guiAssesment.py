@@ -13,7 +13,8 @@ chosen_option = StringVar()
 restock_amount = StringVar()
 status_str = StringVar()
 comics_sold = IntVar()
-comics_dict = {'comic_name': 'stock',}
+comics_dict = {}
+compiled_data = [["comic_name","stock"],]
 name = ""
 
 status_str.set("startup succesfull!")
@@ -92,7 +93,6 @@ def restock():
 #------------------- CSV Read-in ------------------------- #
 with open('data.txt', mode='r') as data:
     reader = csv.reader(data)
-    print(reader)
     row_num = 0
     for row in reader:
         if row[0] == "_amount_sold":
@@ -147,10 +147,12 @@ amount_sold.grid(row=1, column=1, padx=10, pady=5)
 # ----- Stuff n Things ----- #
 root.mainloop()
 
-with open('data.txt', mode='rw') as data:
-    writer = csv.writer(data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    reader = csv.reader(data)
+for name, data in comics_dict.items():
+    compiled_data.append([name, data.stock])
 
-    row_num = 0
+compiled_data.append(["_amount_sold", comics_sold.get()])
 
+with open('data.txt', mode='w') as data:
+    writer = csv.writer(data)
+    writer.writerows(compiled_data)
     data.close()

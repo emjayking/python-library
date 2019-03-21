@@ -1,7 +1,5 @@
 comic_name,stock
-Super Dude, 8
-Lizard Man, 12
-Water Woman, 3
-Builder Bob, 10
-Jack the hammer, 9001
-_amount_sold, 0
+Water Woman,53
+Super Dude,8
+Lizard Man,5
+_amount_sold,7
