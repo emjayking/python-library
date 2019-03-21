@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter as tk
+import csv
 
 # ------------------------------- setup -------------------------------------- #
 # ------------ Windows ----------- #
@@ -9,20 +10,13 @@ root.title("Comic Book Store")
 
 # ------------- Variables -------- #
 chosen_option = StringVar()
-super_label_text = StringVar()
-lizard_label_text = StringVar()
-water_label_text = StringVar()
 restock_amount = StringVar()
 status_str = StringVar()
 comics_sold = IntVar()
-stocks = [8, 12, 3]
-comics = ["Super Dude", "Lizard Man", "Water Woman"]
+comics_dict = {'comic_name': 'stock',}
+name = ""
 
-# --------- Variable setup ------- #
-lizard_label_text.set("Lizard Man Stock: {}".format(stocks[1]))
-water_label_text.set("Water Woman Stock: {}".format(stocks[2]))
-super_label_text.set("Super Dude Stock: {}".format(stocks[0]))
-status_str.set("Startup Succesfull")
+status_str.set("startup succesfull!")
 
 # -------- Frame Setup ----------- #
 sell_frame = ttk.Frame(root)
@@ -36,89 +30,89 @@ restock_frame.grid(row=3, column=0, sticky="NSEW", padx=10, pady=5)
 
 status_frame = ttk.Frame(root)
 status_frame.grid(row=4, column=0, sticky="NS", padx=10, pady=5)
+# -------- Class setup ---------- #
+
+class Comic:
+    """This class is for a comic so it auto generates all the labels and stuff cause I'm lazy """
+
+    def __init__(self, name, stock):
+        self.stock = int(stock)
+        self.name = name
+
+        self.text_variable = StringVar()
+        self.text_variable.set("{} stock: {}".format(name, self.stock))
+
+        self.label = Label(stock_frame, textvariable=self.text_variable)
+        self.label.pack(padx=10, pady=5)
+
+
+    def _sell(self):
+        if self.stock > 0:
+            self.stock -= 1
+            status_str.set("Succesfully sold")
+            comics_sold.set(comics_sold.get() + 1)
+            self.text_variable.set("{} stock: {}".format(self.name, self.stock))
+        else:
+            status_str.set(" Error. cannot sell stock you do not own!")
+
+
+    def _restock(self):
+        try:
+            amount = int(restock_amount.get())
+            self.stock += amount
+
+            self.text_variable.set("{} stock: {}".format(self.name, self.stock))
+
+            status_str.set("Succesfully Restocked")
+
+        except:
+            status_str.set("Error. do not use decimals or letters please")
+
+
 
 
 
 # -------- Functions ------------ #
 def sell():
-    comic = chosen_option.get()
-    if comic == "Super Dude":
-        if stocks[0] > 0:
-            stocks[0] -= 1
-            super_label_text.set("Super Dude Stock: {}".format(stocks[0]))
-            status_str.set("Sell attempt succesfull")
-            comics_sold.set(int(comics_sold.get()) + 1)
-        else:
-            status_str.set("Sell attempt failed, stock is at 0")
-    elif comic == "Lizard Man":
-        if stocks[1] > 0:
-            stocks[1] -= 1
-            lizard_label_text.set("Lizard Man Stock: {}".format(stocks[1]))
-            status_str.set("Sell attempt succesfull")
-            comics_sold.set(int(comics_sold.get()) + 1)
-        else:
-            status_str.set("Sell attempt failed, stock is at 0")
-    else:
-        if stocks[2] > 0:
-            stocks[2] -= 1
-            water_label_text.set("Water Woman Stock: {}".format(stocks[2]))
-            status_str.set("Sell attempt succesfull")
-            comics_sold.set(int(comics_sold.get()) + 1)
-        else:
-            status_str.set("Sell attempt failed, stock is at 0")
+    option = chosen_option.get()
+    try:
+        comics_dict[option]._sell()
+    except:
+        status_str.set("Please choose a comic!")
+
 
 def restock():
-    # Make sure the user doesn't enter any decimals or words
+    option = chosen_option.get()
     try:
-        amount = int(restock_amount.get())
+        comics_dict[option]._restock()
     except:
-        status_str.set("Error, whole numbers only please!")
+        status_str.set("Please choose a comic!")
 
-    comic = chosen_option.get()
-    if comic == "Super Dude":
-        stocks[0] += amount
-        super_label_text.set("Super Dude Stock: {}".format(stocks[0]))
-        status_str.set("Restock attempt succesfull")
-    elif comic == "Lizard Man":
-        stocks[1] += amount
-        lizard_label_text.set("Lizard Man Stock: {}".format(stocks[1]))
-        status_str.set("Restock attempt succesfull")
-    else:
-        stocks[2] += amount
-        water_label_text.set("Water Woman Stock: {}".format(stocks[2]))
-        status_str.set("Restock attempt succesfull")
-#------------------- CSV EXPERIMENTS ------------------------- #
 
-"""the plan:
-import data from a csv file
+#------------------- CSV Read-in ------------------------- #
+with open('data.txt', mode='r') as data:
+    reader = csv.reader(data)
+    print(reader)
+    row_num = 0
+    for row in reader:
+        if row[0] == "_amount_sold":
+            comics_sold.set(int(row[1]))
+        elif row_num != 0:
+            class_name = row[0].strip()
+            class_name = Comic(row[0], row[1])
+            comics_dict[row[0]] = class_name
+            row_num +=1
+        else:
+            row_num +=1
+    data.close()
 
-make a dictionary from the file
-
-dict = {comic_name: 0, etc:you get the picture }
-
-re-write the sell function so that it figures out what stock to update based on the dict values.
-
-make it so it can write to the csv file in order to update the file at the end of the session
-"""
 # ------------------ GUI code main---------------------------- #
-
 
 label1 = Label(sell_frame, text="Comic: ")
 label1.grid(row=0, column=0, padx=10, pady=5)
 
-comic_selector = ttk.OptionMenu(sell_frame, chosen_option, comics[0], * comics)
+comic_selector = ttk.OptionMenu(sell_frame, chosen_option, "choose a comic", * comics_dict.keys())
 comic_selector.grid(row=0, column=1, padx=10, pady=5)
-
-# ------ Stocks ------ #
-
-super_dude_stock = Label(stock_frame, textvariable=super_label_text)
-super_dude_stock.grid(row=1, column=0, padx=10, pady=5)
-
-lizard_man_stock = Label(stock_frame, textvariable=lizard_label_text)
-lizard_man_stock.grid(row=2, column=0, padx=10, pady=5)
-
-water_woman_stock = Label(stock_frame, textvariable=water_label_text)
-water_woman_stock.grid(row=3, column=0, padx=10, pady=5)
 
 # ------ Sell -------- #
 
@@ -152,3 +146,11 @@ amount_sold.grid(row=1, column=1, padx=10, pady=5)
 
 # ----- Stuff n Things ----- #
 root.mainloop()
+
+with open('data.txt', mode='rw') as data:
+    writer = csv.writer(data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    reader = csv.reader(data)
+
+    row_num = 0
+
+    data.close()
