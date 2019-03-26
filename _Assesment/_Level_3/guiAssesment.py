@@ -91,7 +91,7 @@ def restock():
 
 
 #------------------- CSV Read-in ------------------------- #
-with open('data.txt', mode='r', newline='') as data:
+with open('data.txt', mode='r+', newline='') as data:
     reader = csv.reader(data)
     row_num = 0
     for row in reader:
@@ -152,7 +152,7 @@ for name, data in comics_dict.items():
 
 compiled_data.append(["_amount_sold", comics_sold.get()])
 
-with open('data.txt', mode='w') as data:
+with open('data.txt', mode='r+', newline='') as data:
     writer = csv.writer(data)
     writer.writerows(compiled_data)
     data.close()
