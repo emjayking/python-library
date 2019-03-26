@@ -91,7 +91,7 @@ def restock():
 
 
 #------------------- CSV Read-in ------------------------- #
-with open('data.txt', mode='r') as data:
+with open('data.txt', mode='r', newline='') as data:
     reader = csv.reader(data)
     row_num = 0
     for row in reader:
