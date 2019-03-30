@@ -1,5 +1,5 @@
 comic_name,stock
-Water Woman,12
-Super Dude,5
-Lizard Man,9
-_amount_sold,0
+Water Woman,11
+Super Dude,124
+Lizard Man,21
+_amount_sold,6
