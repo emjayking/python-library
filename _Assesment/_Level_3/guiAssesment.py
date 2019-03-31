@@ -104,7 +104,7 @@ def restock():
 # This segment reads the data.txt file and creates the comic classes as well as setting up the comics_sold variable.
 
 with open('data.txt', mode='r+', newline='') as data:
-    reader = csv.reader(data)
+    reader = csv.reader(data, delimiter=',')
     row_num = 0
     # Loops through each line of the file
     for row in reader:
